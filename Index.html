@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Google Dorking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        img.profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        label {
+            display: block;
+            margin: 15px 0 5px;
+            color: #555;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+        .footer a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://byteassassinsextra.github.io/byteassassins5/byte.jpg" alt="Profile Picture" class="profile-pic">
+        <h1>ByteAssassins Instagram Dorking</h1>
+        <label for="username">Username</label>
+        <input type="text" id="username" placeholder="Enter Instagram username">
+
+        <label for="comment">With Comment</label>
+        <input type="text" id="comment" placeholder="Enter comment text">
+
+        <label for="bio">With Bio</label>
+        <input type="text" id="bio" placeholder="Enter bio text">
+
+        <label for="location">With Location Entered in Bio</label>
+        <input type="text" id="location" placeholder="Enter location text">
+
+        <button onclick="redirectToGoogle()">Search on Google</button>
+    </div>
+
+    <div class="footer">
+        Coded by ByteAssassins. Follow for more on <a href="https://www.instagram.com/byteassassins" target="_blank">Instagram</a>.
+    </div>
+
+    <script>
+        function redirectToGoogle() {
+            const username = document.getElementById('username').value;
+            const comment = document.getElementById('comment').value;
+            const bio = document.getElementById('bio').value;
+            const location = document.getElementById('location').value;
+
+            let query = 'site:instagram.com';
+
+            if (username) {
+                query += ` "${username}"`;
+            }
+            if (comment) {
+                query += ` intext:"${comment}"`;
+            }
+            if (bio) {
+                query += ` intitle:"${bio}"`;
+            }
+            if (location) {
+                query += ` inurl:locations "${location}"`;
+            }
+
+            const url = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>
