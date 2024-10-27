@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram Google Dorking</title>
+    <title>Social Media Dorking</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -29,12 +29,25 @@
         h1 {
             color: #333;
         }
+        .ip-address {
+            font-size: 12px; /* Smaller font size for IP address */
+            color: #555;
+        }
         label {
             display: block;
             margin: 15px 0 5px;
             color: #555;
         }
-        input[type="text"] {
+        .username-input {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .username-input img {
+            width: 24px; /* Social media icon size */
+            margin-right: 10px;
+        }
+        input[type="text"], input[type="textarea"] {
             width: 100%;
             padding: 10px;
             margin-bottom: 10px;
@@ -71,19 +84,27 @@
 </head>
 <body>
     <div class="container">
+        <h5>User IP Address: <span class="ip-address" id="user-ip">Loading...</span></h5>
         <img src="https://byteassassinsextra.github.io/byteassassins5/byte.jpg" alt="Profile Picture" class="profile-pic">
-        <h1>ByteAssassins Instagram Dorking</h1>
+        <h1>ByteAssassins Social Media Dorking</h1>
+        
+        <label for="platform">Select Social Media Platform</label>
+        <select id="platform">
+            <option value="instagram">Instagram</option>
+            <option value="twitter">Twitter</option>
+            <option value="facebook">Facebook</option>
+            <option value="linkedin">LinkedIn</option>
+            <option value="threads">Threads</option>
+        </select>
+
         <label for="username">Username</label>
-        <input type="text" id="username" placeholder="Enter Instagram username">
+        <div class="username-input">
+            <img id="social-icon" src="" alt="Social Media Icon">
+            <input type="text" id="username" placeholder="Enter username">
+        </div>
 
-        <label for="comment">With Comment</label>
-        <input type="text" id="comment" placeholder="Enter comment text">
-
-        <label for="bio">With Bio</label>
-        <input type="text" id="bio" placeholder="Enter bio text">
-
-        <label for="location">With Location Entered in Bio</label>
-        <input type="text" id="location" placeholder="Enter location text">
+        <label for="extra">Additional Search Terms (comments, hashtags, etc.)</label>
+        <input type="text" id="extra" placeholder="Enter additional terms (optional)">
 
         <button onclick="redirectToGoogle()">Search</button>
     </div>
@@ -93,25 +114,47 @@
     </div>
 
     <script>
+        // Fetch user IP address
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('user-ip').textContent = data.ip;
+            })
+            .catch(error => {
+                console.error('Error fetching IP address:', error);
+                document.getElementById('user-ip').textContent = 'Unable to load';
+            });
+
+        // Change social media icon based on selected platform
+        document.getElementById('platform').addEventListener('change', function() {
+            const platform = this.value;
+            const iconMap = {
+                instagram: 'https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png',
+                twitter: 'https://upload.wikimedia.org/wikipedia/commons/c/cc/X_icon.svg',
+                facebook: 'https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg',
+                linkedin: 'https://upload.wikimedia.org/wikipedia/commons/0/01/LinkedIn_Logo.svg',
+                threads: 'https://upload.wikimedia.org/wikipedia/commons/9/9d/Threads_%28app%29_logo.svg'
+            };
+            document.getElementById('social-icon').src = iconMap[platform];
+        });
+
         function redirectToGoogle() {
             const username = document.getElementById('username').value;
-            const comment = document.getElementById('comment').value;
-            const bio = document.getElementById('bio').value;
-            const location = document.getElementById('location').value;
+            const platform = document.getElementById('platform').value;
+            const extraTerms = document.getElementById('extra').value;
 
-            let query = 'site:instagram.com';
+            let query = `site:${platform}.com`;
 
             if (username) {
                 query += ` "${username}"`;
             }
-            if (comment) {
-                query += ` intext:"${comment}"`;
+            if (extraTerms) {
+                query += ` intext:"${extraTerms}"`;
             }
-            if (bio) {
-                query += ` intitle:"${bio}"`;
-            }
-            if (location) {
-                query += ` inurl:locations "${location}"`;
+
+            // Enhance query with other search operators based on platform
+            if (platform === 'twitter') {
+                query += ` -filter:retweets`;
             }
 
             const url = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
