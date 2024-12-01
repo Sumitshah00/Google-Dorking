@@ -99,7 +99,7 @@
 
         <label for="username">Username</label>
         <div class="username-input">
-            <img id="social-icon" src="" alt="Social Media Icon">
+            <img id="social-icon" src="https://sumitshah00.github.io/Google-Dorking/Instagram_icon.png" alt="Social Media Icon">
             <input type="text" id="username" placeholder="Enter username">
         </div>
 
@@ -124,6 +124,14 @@
                 console.error('Error fetching IP address:', error);
                 document.getElementById('user-ip').textContent = 'Unable to load';
             });
+
+        // Set the default social media icon when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            const iconMap = {
+                instagram: 'https://sumitshah00.github.io/Google-Dorking/Instagram_icon.png'
+            };
+            document.getElementById('social-icon').src = iconMap['instagram'];  // Set the default icon to Instagram
+        });
 
         // Change social media icon based on selected platform
         document.getElementById('platform').addEventListener('change', function() {
